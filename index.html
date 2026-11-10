@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="web-title">HoneyCraft - 후원 & 혜택 인증 센터</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        body {
+            background-color: #121214;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 15px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #ffbb00;
+            font-size: 26px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .header p {
+            color: #a0a0a8;
+            font-size: 14px;
+        }
+        .ad-container {
+            width: 100%;
+            max-width: 320px;
+            min-height: 100px;
+            background: #1c1c20;
+            border: 1px dashed #3a3a42;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 12px 0;
+            overflow: hidden;
+            text-align: center;
+        }
+        .card {
+            background: #1c1c22;
+            border: 1px solid #2e2e38;
+            border-radius: 16px;
+            padding: 24px 20px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin: 10px 0;
+        }
+        .player-badge {
+            background: #2a2a35;
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #ffcc00;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        .timer-box {
+            font-size: 16px;
+            color: #e0e0e0;
+            margin: 15px 0;
+        }
+        .timer-box span {
+            color: #ff4757;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .btn-disabled {
+            background: #33333d;
+            color: #777782;
+            cursor: not-allowed;
+        }
+        .btn-active {
+            background: linear-gradient(135deg, #ffbb00, #ff8800);
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(255, 187, 0, 0.4);
+        }
+        .btn-active:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 187, 0, 0.6);
+        }
+        .result-box {
+            display: none;
+            margin-top: 20px;
+            padding: 16px;
+            background: #152418;
+            border: 1px solid #2ed573;
+            border-radius: 12px;
+        }
+        .code-display {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            color: #2ed573;
+            margin: 10px 0;
+            background: #0d170f;
+            padding: 8px;
+            border-radius: 8px;
+            user-select: all;
+        }
+        .guide-text {
+            font-size: 13px;
+            color: #90d8a5;
+            line-height: 1.5;
+        }
+        .footer {
+            margin-top: auto;
+            color: #555560;
+            font-size: 12px;
+            text-align: center;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1 id="header-title">🍯 HoneyCraft</h1>
+        <p id="header-subtitle">서버 입장 일일 인증 & 후원 센터</p>
+    </div>
+
+    <!-- 상단 카카오 애드핏 배너 영역 (320x100 또는 300x250) -->
+    <div class="ad-container">
+        <!-- 
+            [카카오 애드핏 등록 방법]
+            카카오 애드핏(adfit.kakao.com)에서 발급받은 배너 스크립트를 이 자리에 붙여넣으세요.
+            예시:
+            <ins class="kakao_ad_area" style="display:none;"
+                data-ad-unit = "DAN-XXXXXXXXXXXX"
+                data-ad-width = "320"
+                data-ad-height = "100"></ins>
+            <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+        -->
+        <p style="color: #666; font-size: 12px;">[ 카카오 애드핏 상단 배너 광고 노출 영역 ]<br>광고 시청으로 서버 유지를 함께 지원해주세요!</p>
+    </div>
+
+    <div class="card">
+        <div id="player-badge" class="player-badge">모험가님 환영합니다!</div>
+        <p id="action-desc" style="color: #b0b0b8; font-size: 14px; line-height: 1.5;">
+            서버 유지를 위한 5초 광고 시청 후<br>
+            아래 버튼을 눌러 <strong>입장 인증 코드</strong>를 발급받으세요.
+        </p>
+
+        <div class="timer-box" id="timer-box">
+            남은 대기 시간: <span id="countdown">5</span> 초
+        </div>
+
+        <button id="auth-btn" class="btn btn-disabled" disabled onclick="generateCode()">
+            잠시 기다려주세요 (5초)
+        </button>
+
+        <div id="result-box" class="result-box">
+            <p id="result-status" style="color: #ffffff; font-weight: bold; font-size: 14px;">✅ 인증 코드 발급 완료!</p>
+            <div id="code-display" class="code-display">----</div>
+            <p class="guide-text">
+                마인크래프트 채팅창에 아래 명령어를 치세요!<br>
+                <strong id="cmd-guide" style="color: #fff; font-size: 15px;">/인증 ----</strong><br>
+                <span id="cmd-benefit" style="color: #ffbb00;">(인증 시 즉시 입장 + 1,000 허니머니 지급!)</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- 하단 카카오 애드핏 배너 영역 -->
+    <div class="ad-container">
+        <!-- 하단 카카오 애드핏 스크립트 위치 -->
+        <p style="color: #666; font-size: 12px;">[ 카카오 애드핏 하단 배너 광고 노출 영역 ]</p>
+    </div>
+
+    <div class="footer" id="footer-text">
+        © 2026 HoneyCraft. All rights reserved.<br>
+        인증 완료 시 24시간 동안 광고 없이 자유롭게 플레이 가능합니다.
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const mode = (params.get('m') || params.get('type') || 'login').toLowerCase();
+        const playerName = params.get('p') || '모험가';
+        const serverToken = params.get('t') || '';
+
+        const playerBadge = document.getElementById('player-badge');
+        const headerTitle = document.getElementById('header-title');
+        const headerSubtitle = document.getElementById('header-subtitle');
+        const actionDesc = document.getElementById('action-desc');
+        const footerText = document.getElementById('footer-text');
+        const cmdGuide = document.getElementById('cmd-guide');
+        const cmdBenefit = document.getElementById('cmd-benefit');
+        const resultStatus = document.getElementById('result-status');
+        const authBtn = document.getElementById('auth-btn');
+
+        playerBadge.textContent = '🎮 플레이어: ' + playerName;
+
+        // 모드별 텍스트 및 UI 동적 설정
+        if (mode === 'revive') {
+            document.title = 'HoneyCraft - 긴급 즉시 부활 광고 티켓';
+            headerTitle.innerHTML = '💀 HoneyCraft';
+            headerTitle.style.color = '#ff4757';
+            headerSubtitle.textContent = '사망 시 무료 즉시 부활 & 아이템 100% 보존';
+            actionDesc.innerHTML = '안타깝게 전사하셨나요?<br>5초 광고 시청 후 <strong>제자리 즉시 부활 + 아이템 100% 보존 + 3초 무적</strong> 코드를 발급받으세요!';
+            footerText.innerHTML = '© 2026 HoneyCraft.<br>부활 코드는 사망 후 5분 동안 유효합니다.';
+        } else if (mode === 'boiler') {
+            document.title = 'HoneyCraft - 보일러 3일 배터리 무료 충전';
+            headerTitle.innerHTML = '🌾 HoneyCraft';
+            headerTitle.style.color = '#2ed573';
+            headerSubtitle.textContent = '농업용/가정용 보일러 3일 배터리 무료 충전소';
+            actionDesc.innerHTML = '보일러 방전 방지를 위한 5초 광고 시청!<br>아래 버튼을 눌러 <strong>3일(72시간) 배터리 충전 코드</strong>를 발급받으세요.';
+            footerText.innerHTML = '© 2026 HoneyCraft.<br>충전 시 본인이 설치한 모든 보일러의 배터리가 72시간 연장됩니다.';
+        }
+
+        let timeLeft = 5;
+        const countdownEl = document.getElementById('countdown');
+        const timerBox = document.getElementById('timer-box');
+        const resultBox = document.getElementById('result-box');
+        const codeDisplay = document.getElementById('code-display');
+
+        const timer = setInterval(() => {
+            timeLeft--;
+            if (timeLeft > 0) {
+                countdownEl.textContent = timeLeft;
+                authBtn.textContent = '잠시 기다려주세요 (' + timeLeft + '초)';
+            } else {
+                clearInterval(timer);
+                timerBox.style.display = 'none';
+                authBtn.disabled = false;
+                authBtn.className = 'btn btn-active';
+                if (mode === 'revive') {
+                    authBtn.textContent = '💀 무료 즉시 부활 코드 발급받기';
+                } else if (mode === 'boiler') {
+                    authBtn.textContent = '⚡ 보일러 3일 배터리 충전 코드 발급받기';
+                } else {
+                    authBtn.textContent = '🎉 입장 인증 코드 발급받기';
+                }
+            }
+        }, 1000);
+
+        function generateCode() {
+            let finalCode = serverToken;
+            if (!finalCode) {
+                finalCode = Math.floor(1000 + Math.random() * 9000).toString();
+            }
+
+            codeDisplay.textContent = finalCode;
+            resultBox.style.display = 'block';
+            authBtn.style.display = 'none';
+
+            if (mode === 'revive') {
+                resultStatus.textContent = '💀 즉시 부활 코드 발급 완료!';
+                cmdGuide.textContent = '/부활 ' + finalCode;
+                cmdBenefit.textContent = '(죽은 위치로 즉시 텔레포트 + 인벤토리 100% 복구 + 3초 무적!)';
+            } else if (mode === 'boiler') {
+                resultStatus.textContent = '⚡ 보일러 3일 충전 코드 발급 완료!';
+                cmdGuide.textContent = '/보일러 충전 ' + finalCode;
+                cmdBenefit.textContent = '(보유한 모든 보일러의 배터리가 3일(72시간) 즉시 연장!)';
+            } else {
+                resultStatus.textContent = '✅ 입장 인증 코드 발급 완료!';
+                cmdGuide.textContent = '/인증 ' + finalCode;
+                cmdBenefit.textContent = '(인증 시 즉시 입장 + 1,000 허니머니 지급!)';
+            }
+        }
+    </script>
+</body>
+</html>
