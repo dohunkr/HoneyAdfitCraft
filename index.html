@@ -2,202 +2,498 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title id="web-title">HoneyCraft - 후원 & 혜택 인증 센터</title>
+    <!-- Pretendard Font (치지직 디자인 시스템 표준) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
     <style>
+        :root {
+            /* 치지직 design.md 다크 테마 토큰 */
+            --brand-neon: #00FFA3;
+            --brand-black: #000000;
+            --dark-brand-strong: #00CC82;
+            --dark-brand-base: #009962;
+            --dark-brand-weaker: #11382C;
+
+            --dark-bg-base: #141517;
+            --dark-bg-weak: #0E0F10;
+            --dark-surface-weaker: #1C1D1F;
+            --dark-surface-weak: #202224;
+            --dark-surface-base: #2E3033;
+            --dark-surface-strong: #4D4D4D;
+
+            --dark-text-primary: #FFFFFF;
+            --dark-text-secondary: #DFE2EA;
+            --dark-text-tertiary: #9DA5B6;
+            --dark-text-weak: #697183;
+
+            --dark-border-weak: #2E3033;
+            --dark-border-base: #4D4D4D;
+            --live-red: #E02020;
+            --replay-violet: #4E41DB;
+
+            --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: var(--font-sans);
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
+
         body {
-            background-color: #121214;
-            color: #ffffff;
+            background-color: var(--dark-bg-base);
+            color: var(--dark-text-primary);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px 15px;
         }
+
+        /* 헤더 (높이 60px, 치지직 표준) */
         .header {
+            width: 100%;
+            height: 60px;
+            background-color: var(--dark-bg-base);
+            border-bottom: 1px solid var(--dark-border-weak);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .header-logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--brand-neon), #00bb77);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: var(--dark-bg-weak);
+            font-size: 16px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: var(--dark-text-primary);
+        }
+
+        .header-title span {
+            color: var(--brand-neon);
+        }
+
+        .header-badge {
+            background-color: var(--dark-surface-weak);
+            color: var(--brand-neon);
+            border: 1px solid var(--dark-brand-base);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: -0.3px;
+        }
+
+        /* 레이아웃 래퍼 */
+        .page-container {
+            width: 100%;
+            max-width: 1240px;
+            padding: 16px 16px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        /* 상단/하단 728x90 배너 영역 */
+        .ad-banner-728 {
+            width: 728px;
+            height: 90px;
+            min-height: 90px;
+            background-color: var(--dark-surface-weaker);
+            border: 1px solid var(--dark-border-weak);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        /* 본문 3단 레이아웃 (좌측 160x600 - 중앙 모달 450px - 우측 160x600) */
+        .main-content-layout {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            width: 100%;
+            margin: 8px 0;
+        }
+
+        /* 좌우 160x600 사이드바 광고 */
+        .ad-skyscraper-160 {
+            width: 160px;
+            height: 600px;
+            min-width: 160px;
+            min-height: 600px;
+            background-color: var(--dark-surface-weaker);
+            border: 1px solid var(--dark-border-weak);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        /* 중앙 메인 카드 (치지직 모달 스타일, 폭 450px) */
+        .center-card {
+            background-color: var(--dark-surface-weaker);
+            border: 1px solid var(--dark-border-weak);
+            border-radius: 16px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2), 0 4px 4px rgba(0, 0, 0, 0.3);
             text-align: center;
+            position: relative;
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--dark-surface-weak);
+            border: 1px solid var(--dark-border-weak);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--dark-text-secondary);
             margin-bottom: 20px;
         }
-        .header h1 {
-            color: #ffbb00;
-            font-size: 26px;
-            margin-bottom: 6px;
+
+        .status-chip .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--brand-neon);
+            box-shadow: 0 0 8px var(--brand-neon);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 32px;
+            letter-spacing: -0.3px;
+            margin-bottom: 8px;
+            color: var(--dark-text-primary);
+        }
+
+        .card-desc {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 22px;
+            letter-spacing: -0.3px;
+            color: var(--dark-text-tertiary);
+            margin-bottom: 24px;
+        }
+
+        .card-desc strong {
+            color: var(--brand-neon);
+            font-weight: 600;
+        }
+
+        /* 카운트다운 타이머 박스 */
+        .timer-box {
+            background-color: var(--dark-surface-weak);
+            border: 1px solid var(--dark-border-weak);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--dark-text-secondary);
+        }
+
+        .timer-box span {
+            color: var(--brand-neon);
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 4px;
+        }
+
+        /* 알약 버튼 (치지직 button-primary, 높이 44px, radius 22px) */
+        .btn-pill {
+            width: 100%;
+            height: 44px;
+            border-radius: 22px;
+            border: none;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
-        .header p {
-            color: #a0a0a8;
-            font-size: 14px;
+
+        .btn-disabled {
+            background-color: var(--dark-surface-base);
+            color: var(--dark-text-weak);
+            cursor: not-allowed;
         }
-        .ad-container {
-            width: 100%;
-            max-width: 320px;
-            min-height: 100px;
-            background: #1c1c20;
-            border: 1px dashed #3a3a42;
+
+        .btn-active {
+            background-color: var(--brand-neon);
+            color: var(--dark-bg-weak);
+            box-shadow: 0 2px 12px rgba(0, 255, 163, 0.3);
+        }
+
+        .btn-active:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 255, 163, 0.45);
+            background-color: #12ffaa;
+        }
+
+        /* 인증 완료 결과 박스 */
+        .result-box {
+            display: none;
+            background-color: var(--dark-brand-weaker);
+            border: 1px solid var(--dark-brand-base);
             border-radius: 12px;
+            padding: 20px 16px;
+            margin-top: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--brand-neon);
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 12px 0;
-            overflow: hidden;
-            text-align: center;
+            gap: 6px;
         }
-        .card {
-            background: #1c1c22;
-            border: 1px solid #2e2e38;
-            border-radius: 16px;
-            padding: 24px 20px;
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin: 10px 0;
-        }
-        .player-badge {
-            background: #2a2a35;
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 14px;
-            color: #ffcc00;
-            font-weight: bold;
-            margin-bottom: 16px;
-        }
-        .timer-box {
-            font-size: 16px;
-            color: #e0e0e0;
-            margin: 15px 0;
-        }
-        .timer-box span {
-            color: #ff4757;
-            font-size: 22px;
-            font-weight: bold;
-        }
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 10px;
-        }
-        .btn-disabled {
-            background: #33333d;
-            color: #777782;
-            cursor: not-allowed;
-        }
-        .btn-active {
-            background: linear-gradient(135deg, #ffbb00, #ff8800);
-            color: #000000;
-            box-shadow: 0 4px 15px rgba(255, 187, 0, 0.4);
-        }
-        .btn-active:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 187, 0, 0.6);
-        }
-        .result-box {
-            display: none;
-            margin-top: 20px;
-            padding: 16px;
-            background: #152418;
-            border: 1px solid #2ed573;
-            border-radius: 12px;
-        }
+
         .code-display {
-            font-size: 32px;
+            font-size: 34px;
             font-weight: 900;
             letter-spacing: 6px;
-            color: #2ed573;
-            margin: 10px 0;
-            background: #0d170f;
-            padding: 8px;
+            color: #ffffff;
+            background-color: var(--dark-bg-weak);
+            border: 1px solid var(--dark-brand-base);
+            padding: 10px;
             border-radius: 8px;
+            margin: 12px 0;
             user-select: all;
+            font-family: monospace;
         }
-        .guide-text {
+
+        .cmd-guide-box {
             font-size: 13px;
-            color: #90d8a5;
-            line-height: 1.5;
+            line-height: 20px;
+            color: var(--dark-text-secondary);
         }
+
+        .cmd-code-badge {
+            display: inline-block;
+            background-color: var(--dark-surface-weak);
+            color: var(--brand-neon);
+            font-family: monospace;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin: 6px 0;
+            border: 1px solid var(--dark-border-weak);
+        }
+
+        /* 혜택 안내 목록 */
+        .benefit-list {
+            text-align: left;
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px solid var(--dark-border-weak);
+        }
+
+        .benefit-item {
+            font-size: 13px;
+            color: var(--dark-text-tertiary);
+            line-height: 22px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .benefit-item .check {
+            color: var(--brand-neon);
+            font-weight: bold;
+        }
+
+        /* 푸터 */
         .footer {
-            margin-top: auto;
-            color: #555560;
-            font-size: 12px;
+            width: 100%;
+            border-top: 1px solid var(--dark-border-weak);
+            padding: 20px 0;
             text-align: center;
-            padding-top: 20px;
+            font-size: 12px;
+            color: var(--dark-text-weak);
+            line-height: 18px;
+            margin-top: auto;
+        }
+
+        /* 반응형 대응 (모바일 & 태블릿) */
+        @media (max-width: 1080px) {
+            .ad-skyscraper-160 {
+                display: none; /* 화면 폭 좁을 때 160x600 사이드 광고 숨김 */
+            }
+            .main-content-layout {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .ad-banner-728 {
+                width: 100%;
+                max-width: 728px;
+                transform: scale(0.95);
+            }
+            .center-card {
+                padding: 24px 18px;
+            }
+            .code-display {
+                font-size: 28px;
+                letter-spacing: 4px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1 id="header-title">🍯 HoneyCraft</h1>
-        <p id="header-subtitle">서버 입장 일일 인증 & 후원 센터</p>
-    </div>
+    <!-- 상단 네비게이션 헤더 -->
+    <header class="header">
+        <a href="#" class="header-brand">
+            <div class="header-logo-icon">🍯</div>
+            <div class="header-title">HoneyCraft <span>AUTH</span></div>
+        </a>
+        <div class="header-badge" id="service-badge">LIVE 혜택 센터</div>
+    </header>
 
-    <!-- 상단 카카오 애드핏 배너 영역 (320x100 또는 300x250) -->
-    <div class="ad-container">
-        <!-- 
-            [카카오 애드핏 등록 방법]
-            카카오 애드핏(adfit.kakao.com)에서 발급받은 배너 스크립트를 이 자리에 붙여넣으세요.
-            예시:
+    <div class="page-container">
+
+        <!-- [광고 1] 상단 728x90 배너 (DAN-5dyRsp5nZwExLSQv) -->
+        <div class="ad-banner-728">
             <ins class="kakao_ad_area" style="display:none;"
-                data-ad-unit = "DAN-XXXXXXXXXXXX"
-                data-ad-width = "320"
-                data-ad-height = "100"></ins>
-            <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
-        -->
-        <p style="color: #666; font-size: 12px;">[ 카카오 애드핏 상단 배너 광고 노출 영역 ]<br>광고 시청으로 서버 유지를 함께 지원해주세요!</p>
-    </div>
-
-    <div class="card">
-        <div id="player-badge" class="player-badge">모험가님 환영합니다!</div>
-        <p id="action-desc" style="color: #b0b0b8; font-size: 14px; line-height: 1.5;">
-            서버 유지를 위한 5초 광고 시청 후<br>
-            아래 버튼을 눌러 <strong>입장 인증 코드</strong>를 발급받으세요.
-        </p>
-
-        <div class="timer-box" id="timer-box">
-            남은 대기 시간: <span id="countdown">5</span> 초
+                data-ad-unit = "DAN-5dyRsp5nZwExLSQv"
+                data-ad-width = "728"
+                data-ad-height = "90"></ins>
+            <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
         </div>
 
-        <button id="auth-btn" class="btn btn-disabled" disabled onclick="generateCode()">
-            잠시 기다려주세요 (5초)
-        </button>
+        <!-- 본문 3단 레이아웃 -->
+        <div class="main-content-layout">
 
-        <div id="result-box" class="result-box">
-            <p id="result-status" style="color: #ffffff; font-weight: bold; font-size: 14px;">✅ 인증 코드 발급 완료!</p>
-            <div id="code-display" class="code-display">----</div>
-            <p class="guide-text">
-                마인크래프트 채팅창에 아래 명령어를 치세요!<br>
-                <strong id="cmd-guide" style="color: #fff; font-size: 15px;">/인증 ----</strong><br>
-                <span id="cmd-benefit" style="color: #ffbb00;">(인증 시 즉시 입장 + 1,000 허니머니 지급!)</span>
-            </p>
+            <!-- [광고 2] 좌측 160x600 와이드 스카이스크래퍼 (DAN-cARb5ESLGhs1nD1Y) -->
+            <aside class="ad-skyscraper-160">
+                <ins class="kakao_ad_area" style="display:none;"
+                    data-ad-unit = "DAN-cARb5ESLGhs1nD1Y"
+                    data-ad-width = "160"
+                    data-ad-height = "600"></ins>
+                <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+            </aside>
+
+            <!-- 중앙 메인 카드 모달 -->
+            <main class="center-card">
+                <div class="status-chip">
+                    <span class="dot"></span>
+                    <span id="player-badge">모험가님 환영합니다</span>
+                </div>
+
+                <h1 class="card-title" id="main-title">일일 서버 입장 인증</h1>
+                <p class="card-desc" id="main-desc">
+                    쾌적한 서버 유지를 위한 5초 스폰서 광고 시청 후<br>
+                    <strong>입장 인증 코드</strong>를 발급받으세요.
+                </p>
+
+                <div class="timer-box" id="timer-box">
+                    스폰서 광고 대기 시간: <span id="countdown">5</span>초
+                </div>
+
+                <button id="auth-btn" class="btn-pill btn-disabled" disabled onclick="generateCode()">
+                    잠시 기다려주세요 (5초)
+                </button>
+
+                <div id="result-box" class="result-box">
+                    <div class="result-title" id="result-status">
+                        <span>✨</span> 인증 코드 발급 완료!
+                    </div>
+                    <div id="code-display" class="code-display">----</div>
+                    <div class="cmd-guide-box">
+                        마인크래프트 채팅창에 아래 명령어를 입력하세요<br>
+                        <div class="cmd-code-badge" id="cmd-guide">/인증 ----</div><br>
+                        <span id="cmd-benefit" style="color: var(--brand-neon); font-size: 12px;">(인증 완료 시 24시간 자유 플레이 + 1,000 허니머니 지급)</span>
+                    </div>
+                </div>
+
+                <div class="benefit-list">
+                    <div class="benefit-item"><span class="check">✔</span> 5초 광고 시청으로 모든 서버 유지 비용이 후원됩니다.</div>
+                    <div class="benefit-item"><span class="check">✔</span> 인벤세이브 기본 적용: 사망 시에도 모든 소지품 완전 보존!</div>
+                    <div class="benefit-item" id="benefit-line-3"><span class="check">✔</span> 일일 1회 인증으로 24시간 동안 광고 없이 쾌적한 플레이</div>
+                </div>
+            </main>
+
+            <!-- [광고 3] 우측 160x600 와이드 스카이스크래퍼 (DAN-BV4QvapqMBecNGiI) -->
+            <aside class="ad-skyscraper-160">
+                <ins class="kakao_ad_area" style="display:none;"
+                    data-ad-unit = "DAN-BV4QvapqMBecNGiI"
+                    data-ad-width = "160"
+                    data-ad-height = "600"></ins>
+                <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+            </aside>
+
         </div>
+
+        <!-- [광고 4] 하단 728x90 배너 (DAN-fTlaZ3BGzoX2aEPm) -->
+        <div class="ad-banner-728">
+            <ins class="kakao_ad_area" style="display:none;"
+                data-ad-unit = "DAN-fTlaZ3BGzoX2aEPm"
+                data-ad-width = "728"
+                data-ad-height = "90"></ins>
+            <script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+        </div>
+
     </div>
 
-    <!-- 하단 카카오 애드핏 배너 영역 -->
-    <div class="ad-container">
-        <!-- 하단 카카오 애드핏 스크립트 위치 -->
-        <p style="color: #666; font-size: 12px;">[ 카카오 애드핏 하단 배너 광고 노출 영역 ]</p>
-    </div>
-
-    <div class="footer" id="footer-text">
-        © 2026 HoneyCraft. All rights reserved.<br>
-        인증 완료 시 24시간 동안 광고 없이 자유롭게 플레이 가능합니다.
-    </div>
+    <footer class="footer" id="footer-text">
+        © 2026 HoneyCraft & 치지직 테마 디자인. All rights reserved.<br>
+        서버를 함께 유지하고 응원해주시는 모든 모험가 여러분께 진심으로 감사드립니다.
+    </footer>
 
     <script>
         const params = new URLSearchParams(window.location.search);
@@ -206,32 +502,33 @@
         const serverToken = params.get('t') || '';
 
         const playerBadge = document.getElementById('player-badge');
-        const headerTitle = document.getElementById('header-title');
-        const headerSubtitle = document.getElementById('header-subtitle');
-        const actionDesc = document.getElementById('action-desc');
+        const mainTitle = document.getElementById('main-title');
+        const mainDesc = document.getElementById('main-desc');
+        const serviceBadge = document.getElementById('service-badge');
+        const benefitLine3 = document.getElementById('benefit-line-3');
         const footerText = document.getElementById('footer-text');
         const cmdGuide = document.getElementById('cmd-guide');
         const cmdBenefit = document.getElementById('cmd-benefit');
         const resultStatus = document.getElementById('result-status');
         const authBtn = document.getElementById('auth-btn');
 
-        playerBadge.textContent = '🎮 플레이어: ' + playerName;
+        playerBadge.textContent = '🎮 ' + playerName + ' 님';
 
-        // 모드별 텍스트 및 UI 동적 설정
+        // 모드별 치지직 테마 동적 UI
         if (mode === 'revive') {
-            document.title = 'HoneyCraft - 긴급 즉시 부활 광고 티켓';
-            headerTitle.innerHTML = '💀 HoneyCraft';
-            headerTitle.style.color = '#ff4757';
-            headerSubtitle.textContent = '사망 시 무료 즉시 부활 & 아이템 100% 보존';
-            actionDesc.innerHTML = '안타깝게 전사하셨나요?<br>5초 광고 시청 후 <strong>제자리 즉시 부활 + 아이템 100% 보존 + 3초 무적</strong> 코드를 발급받으세요!';
-            footerText.innerHTML = '© 2026 HoneyCraft.<br>부활 코드는 사망 후 5분 동안 유효합니다.';
+            document.title = 'HoneyCraft - 제자리 즉시 부활 티켓';
+            serviceBadge.textContent = '⚡ 긴급 즉시 부활';
+            mainTitle.innerHTML = '⚡ 제자리 즉시 부활';
+            mainDesc.innerHTML = '사망한 곳까지 다시 뛰어갈 필요 없이!<br>5초 광고 시청 후 <strong>죽은 자리 즉시 복귀 + 풀피 + 3초 무적</strong> 코드를 발급받으세요.';
+            benefitLine3.innerHTML = '<span class="check">✔</span> 죽은 바로 그 자리로 즉시 순간이동 & 3초간 완전 무적 가호';
+            footerText.innerHTML = '© 2026 HoneyCraft.<br>부활 티켓 코드는 사망 후 5분 동안 유효합니다.';
         } else if (mode === 'boiler') {
             document.title = 'HoneyCraft - 보일러 3일 배터리 무료 충전';
-            headerTitle.innerHTML = '🌾 HoneyCraft';
-            headerTitle.style.color = '#2ed573';
-            headerSubtitle.textContent = '농업용/가정용 보일러 3일 배터리 무료 충전소';
-            actionDesc.innerHTML = '보일러 방전 방지를 위한 5초 광고 시청!<br>아래 버튼을 눌러 <strong>3일(72시간) 배터리 충전 코드</strong>를 발급받으세요.';
-            footerText.innerHTML = '© 2026 HoneyCraft.<br>충전 시 본인이 설치한 모든 보일러의 배터리가 72시간 연장됩니다.';
+            serviceBadge.textContent = '🌾 온실 보일러 센터';
+            mainTitle.innerHTML = '🌾 보일러 3일 배터리 충전';
+            mainDesc.innerHTML = '보일러 방전 방지를 위한 5초 광고 시청!<br>아래 버튼을 눌러 <strong>3일(72시간) 배터리 충전 코드</strong>를 발급받으세요.';
+            benefitLine3.innerHTML = '<span class="check">✔</span> 보유한 모든 농업용/가정용 보일러의 배터리가 +72시간(3일) 연장됩니다.';
+            footerText.innerHTML = '© 2026 HoneyCraft.<br>보일러 배터리가 방전되면 작물 성장이 멈추고 얼어붙으니 주기적으로 충전해주세요.';
         }
 
         let timeLeft = 5;
@@ -249,13 +546,13 @@
                 clearInterval(timer);
                 timerBox.style.display = 'none';
                 authBtn.disabled = false;
-                authBtn.className = 'btn btn-active';
+                authBtn.className = 'btn-pill btn-active';
                 if (mode === 'revive') {
-                    authBtn.textContent = '💀 무료 즉시 부활 코드 발급받기';
+                    authBtn.innerHTML = '⚡ 제자리 즉시 부활 코드 발급받기';
                 } else if (mode === 'boiler') {
-                    authBtn.textContent = '⚡ 보일러 3일 배터리 충전 코드 발급받기';
+                    authBtn.innerHTML = '⚡ 보일러 3일 배터리 충전 코드 발급받기';
                 } else {
-                    authBtn.textContent = '🎉 입장 인증 코드 발급받기';
+                    authBtn.innerHTML = '🎉 입장 인증 코드 발급받기';
                 }
             }
         }, 1000);
@@ -271,17 +568,17 @@
             authBtn.style.display = 'none';
 
             if (mode === 'revive') {
-                resultStatus.textContent = '💀 즉시 부활 코드 발급 완료!';
+                resultStatus.innerHTML = '<span>⚡</span> 즉시 부활 코드 발급 완료!';
                 cmdGuide.textContent = '/부활 ' + finalCode;
-                cmdBenefit.textContent = '(죽은 위치로 즉시 텔레포트 + 인벤토리 100% 복구 + 3초 무적!)';
+                cmdBenefit.textContent = '(입력 즉시 사망 위치로 순간이동 & 풀피 부활 & 3초 완전 무적!)';
             } else if (mode === 'boiler') {
-                resultStatus.textContent = '⚡ 보일러 3일 충전 코드 발급 완료!';
+                resultStatus.innerHTML = '<span>🌾</span> 보일러 충전 코드 발급 완료!';
                 cmdGuide.textContent = '/보일러 충전 ' + finalCode;
-                cmdBenefit.textContent = '(보유한 모든 보일러의 배터리가 3일(72시간) 즉시 연장!)';
+                cmdBenefit.textContent = '(입력 즉시 소유한 모든 보일러의 배터리가 +72시간 연장!)';
             } else {
-                resultStatus.textContent = '✅ 입장 인증 코드 발급 완료!';
+                resultStatus.innerHTML = '<span>🎉</span> 입장 인증 코드 발급 완료!';
                 cmdGuide.textContent = '/인증 ' + finalCode;
-                cmdBenefit.textContent = '(인증 시 즉시 입장 + 1,000 허니머니 지급!)';
+                cmdBenefit.textContent = '(인증 즉시 입장 승인 & 1,000 허니머니 지급!)';
             }
         }
     </script>
